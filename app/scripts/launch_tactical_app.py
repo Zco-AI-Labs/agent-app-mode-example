@@ -48,10 +48,12 @@ def launch_tactical_app(alert_level: str = "GREEN") -> dict:
         "widgetConfig": canvas_config,
         "data": {
             "alert_level": alert_level.upper(),
-            "shields_power": 100,
-            "warp_power": 80,
-            "sensors_power": 90,
-            "aux_power": 90
+            "shields_power": 85,
+            "warp_power": 75,
+            "sensors_power": 70,
+            "aux_power": 70,
+            "grid_status": "OPTIMAL",
+            "stardate": "47634.1"
         }
     }
     
@@ -60,10 +62,12 @@ def launch_tactical_app(alert_level: str = "GREEN") -> dict:
         "widgetConfig": remote_config,
         "data": {
             "alert_level": alert_level.upper(),
-            "shields_power": 100,
-            "warp_power": 80,
-            "sensors_power": 90,
-            "aux_power": 90
+            "shields_power": 85,
+            "warp_power": 75,
+            "sensors_power": 70,
+            "aux_power": 70,
+            "grid_status": "OPTIMAL",
+            "stardate": "47634.1"
         }
     }
     

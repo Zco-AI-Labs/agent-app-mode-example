@@ -4,7 +4,7 @@
     "direction": "vertical",
     "gap": "sm",
     "padding": "md",
-    "className": "flex flex-col gap-3 p-3 bg-[#121214] text-slate-200 font-sans select-none"
+    "className": "flex flex-col gap-3 p-3 bg-[#0B0B10] text-slate-200 font-sans select-none rounded-xl border border-[#FF9900]/25 shadow-xl"
   },
   "children": [
     {
@@ -15,21 +15,53 @@
       },
       "children": [
         {
-          "type": "text",
+          "type": "container",
           "props": {
-            "text": "TACTICAL REMOTE CONTROLLER",
-            "size": "xs",
-            "weight": "bold",
-            "className": "text-white uppercase tracking-wider font-mono"
-          }
+            "direction": "horizontal",
+            "className": "flex items-center gap-2"
+          },
+          "children": [
+            {
+              "type": "container",
+              "props": {
+                "className": "w-2.5 h-5 rounded-l bg-[#FF9900]"
+              },
+              "children": []
+            },
+            {
+              "type": "text",
+              "props": {
+                "text": "LCARS PADD REMOTE",
+                "size": "xs",
+                "weight": "bold",
+                "className": "text-[#FF9900] uppercase tracking-wider font-mono text-[11px]"
+              }
+            }
+          ]
         },
         {
-          "type": "text",
+          "type": "container",
           "props": {
-            "text": "CANVAS SYNCED",
-            "size": "xs",
-            "className": "text-[10px] text-emerald-400 font-mono"
-          }
+            "direction": "horizontal",
+            "className": "flex items-center gap-1.5"
+          },
+          "children": [
+            {
+              "type": "container",
+              "props": {
+                "className": "w-2 h-2 rounded-full bg-emerald-400 animate-ping"
+              },
+              "children": []
+            },
+            {
+              "type": "text",
+              "props": {
+                "text": "CANVAS SYNCED",
+                "size": "xs",
+                "className": "text-[10px] text-emerald-400 font-mono tracking-wider font-semibold"
+              }
+            }
+          ]
         }
       ]
     },
@@ -43,9 +75,9 @@
         {
           "type": "text",
           "props": {
-            "text": "SHIP ALERT STATUS",
+            "text": "ALERT STATUS COMMAND",
             "size": "xs",
-            "className": "text-[10px] font-mono uppercase text-slate-400"
+            "className": "text-[10px] font-mono uppercase tracking-widest text-[#9999FF]"
           }
         },
         {
@@ -94,16 +126,33 @@
       "props": {
         "direction": "vertical",
         "gap": "xs",
-        "className": "pt-2 border-t border-white/5 flex flex-col gap-2"
+        "className": "pt-2 border-t border-white/5 flex flex-col gap-2.5"
       },
       "children": [
         {
-          "type": "text",
+          "type": "container",
           "props": {
-            "text": "SUBSYSTEM POWER ALLOCATION",
-            "size": "xs",
-            "className": "text-[10px] font-mono uppercase text-slate-400"
-          }
+            "direction": "horizontal",
+            "className": "flex items-center justify-between"
+          },
+          "children": [
+            {
+              "type": "text",
+              "props": {
+                "text": "SUBSYSTEM POWER GRID",
+                "size": "xs",
+                "className": "text-[10px] font-mono uppercase tracking-widest text-[#9999FF]"
+              }
+            },
+            {
+              "type": "text",
+              "props": {
+                "text": "{{grid_status}}",
+                "size": "xs",
+                "className": "text-[10px] font-mono text-cyan-300 font-semibold"
+              }
+            }
+          ]
         },
         {
           "type": "slider",
@@ -132,7 +181,7 @@
             "min": 0,
             "max": 100,
             "label": "Tactical Sensors",
-            "colorTheme": "emerald"
+            "colorTheme": "blue"
           }
         },
         {
@@ -141,7 +190,7 @@
             "name": "aux_power",
             "min": 0,
             "max": 100,
-            "label": "Auxiliary Power",
+            "label": "Auxiliary Reserve",
             "colorTheme": "amber"
           }
         }
@@ -158,9 +207,9 @@
         {
           "type": "text",
           "props": {
-            "text": "EMERGENCY ACTIONS",
+            "text": "TACTICAL QUICK SHUNTS",
             "size": "xs",
-            "className": "text-[10px] font-mono uppercase text-slate-400"
+            "className": "text-[10px] font-mono uppercase tracking-widest text-[#9999FF]"
           }
         },
         {
@@ -174,7 +223,7 @@
               "type": "button",
               "props": {
                 "label": "Boost Shields ⚡",
-                "actionUrl": "app://boost_shields?shields_power=100&announcement=Defensive%20shields%20boosted%20to%20100%25%20maximum%20output.",
+                "actionUrl": "app://boost_shields?shields_power=100&warp_power=60&sensors_power=50&aux_power=90&grid_status=COMBAT%20READY&announcement=Defensive%20shields%20boosted%20to%20100%25%20maximum%20output.",
                 "styling": {
                   "colorTheme": "emerald"
                 }
@@ -184,7 +233,7 @@
               "type": "button",
               "props": {
                 "label": "Engage Warp 🚀",
-                "actionUrl": "app://engage_warp?warp_power=95&announcement=Warp%20engines%20engaged%20at%20warp%20factor%209.5.",
+                "actionUrl": "app://engage_warp?warp_power=100&shields_power=60&sensors_power=50&aux_power=90&grid_status=HIGH%20WARP&announcement=Warp%20engines%20engaged%20at%20warp%20factor%209.5.",
                 "styling": {
                   "colorTheme": "blue"
                 }
@@ -194,7 +243,7 @@
               "type": "button",
               "props": {
                 "label": "Sensor Sweep 📡",
-                "actionUrl": "app://scan_sector?sensors_power=100&announcement=Tactical%20sensors%20conducting%20full-frequency%20sector%20sweep.",
+                "actionUrl": "app://scan_sector?sensors_power=100&shields_power=70&warp_power=50&aux_power=80&grid_status=SECTOR%20SWEEP&announcement=Tactical%20sensors%20conducting%20full-frequency%20sector%20sweep.",
                 "styling": {
                   "colorTheme": "blue"
                 }
@@ -203,10 +252,10 @@
             {
               "type": "button",
               "props": {
-                "label": "Diagnostic 🔍",
-                "actionUrl": "app://diagnostic_sweep?aux_power=100&announcement=Level%204%20diagnostic%20sweep%20completed%20across%20all%20subsystems.",
+                "label": "Rebalance Grid ⚖️",
+                "actionUrl": "app://rebalance_grid?shields_power=75&warp_power=75&sensors_power=75&aux_power=75&grid_status=OPTIMAL&announcement=Power%20grid%20rebalanced%20across%20all%20subsystems.",
                 "styling": {
-                  "colorTheme": "emerald"
+                  "colorTheme": "amber"
                 }
               }
             }
@@ -219,7 +268,7 @@
       "props": {
         "direction": "vertical",
         "gap": "xs",
-        "className": "pt-3 border-t border-white/10"
+        "className": "pt-2.5 border-t border-white/10"
       },
       "children": [
         {
