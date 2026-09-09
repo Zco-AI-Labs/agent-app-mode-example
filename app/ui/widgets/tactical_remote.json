@@ -1,0 +1,160 @@
+{
+  "type": "container",
+  "props": {
+    "direction": "vertical",
+    "gap": "sm",
+    "padding": "md",
+    "className": "flex flex-col gap-3 p-3 bg-[#121214] text-slate-200 font-sans select-none"
+  },
+  "children": [
+    {
+      "type": "container",
+      "props": {
+        "direction": "horizontal",
+        "className": "flex items-center justify-between pb-2 border-b border-white/10"
+      },
+      "children": [
+        {
+          "type": "text",
+          "props": {
+            "text": "TACTICAL REMOTE CONTROLLER",
+            "size": "xs",
+            "weight": "bold",
+            "className": "text-white uppercase tracking-wider font-mono"
+          }
+        },
+        {
+          "type": "text",
+          "props": {
+            "text": "SYNCED",
+            "size": "xs",
+            "className": "text-[10px] text-emerald-400 font-mono"
+          }
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        {
+          "type": "text",
+          "props": {
+            "text": "SHIP ALERT STATUS",
+            "size": "xs",
+            "className": "text-[10px] font-mono uppercase text-slate-400"
+          }
+        },
+        {
+          "type": "container",
+          "props": {
+            "direction": "horizontal",
+            "className": "grid grid-cols-3 gap-1.5"
+          },
+          "children": [
+            {
+              "type": "button",
+              "props": {
+                "label": "GREEN",
+                "actionUrl": "agent://set_alert_green?alert=GREEN",
+                "styling": {
+                  "colorTheme": "emerald"
+                }
+              }
+            },
+            {
+              "type": "button",
+              "props": {
+                "label": "YELLOW",
+                "actionUrl": "agent://set_alert_yellow?alert=YELLOW",
+                "styling": {
+                  "colorTheme": "amber"
+                }
+              }
+            },
+            {
+              "type": "button",
+              "props": {
+                "label": "RED",
+                "actionUrl": "agent://set_alert_red?alert=RED",
+                "styling": {
+                  "colorTheme": "red"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs",
+        "className": "pt-2 border-t border-white/5"
+      },
+      "children": [
+        {
+          "type": "text",
+          "props": {
+            "text": "EMERGENCY ACTIONS",
+            "size": "xs",
+            "className": "text-[10px] font-mono uppercase text-slate-400"
+          }
+        },
+        {
+          "type": "container",
+          "props": {
+            "direction": "horizontal",
+            "className": "grid grid-cols-2 gap-2"
+          },
+          "children": [
+            {
+              "type": "button",
+              "props": {
+                "label": "Boost Shields ⚡",
+                "actionUrl": "agent://boost_shields",
+                "styling": {
+                  "colorTheme": "emerald"
+                }
+              }
+            },
+            {
+              "type": "button",
+              "props": {
+                "label": "Sensor Sweep 📡",
+                "actionUrl": "agent://scan_sector",
+                "styling": {
+                  "colorTheme": "blue"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs",
+        "className": "pt-3 border-t border-white/10"
+      },
+      "children": [
+        {
+          "type": "button",
+          "props": {
+            "label": "Save Settings to Database 💾",
+            "actionUrl": "agent://save_tactical_state",
+            "styling": {
+              "colorTheme": "emerald"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

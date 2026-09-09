@@ -1,0 +1,27 @@
+# Local environment configuration (containing Personal Access Tokens)
+.env
+
+# Local emulation database
+local_db.json
+
+# Python compilation cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Virtual environments and caches
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+build/
+
+.example-agent-projects/
+example-agent-projects/

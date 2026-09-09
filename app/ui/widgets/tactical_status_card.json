@@ -1,0 +1,159 @@
+{
+  "type": "container",
+  "props": {
+    "direction": "vertical",
+    "gap": "sm",
+    "padding": "md",
+    "className": "flex flex-col gap-3 p-4 bg-[#121214] border border-emerald-500/30 rounded-xl text-white shadow-lg font-sans"
+  },
+  "children": [
+    {
+      "type": "container",
+      "props": {
+        "direction": "horizontal",
+        "className": "flex items-center justify-between pb-2 border-b border-white/10"
+      },
+      "children": [
+        {
+          "type": "text",
+          "props": {
+            "text": "USS HUBSCAPE • TACTICAL STATUS",
+            "size": "sm",
+            "weight": "bold",
+            "className": "text-white tracking-wider font-mono"
+          }
+        },
+        {
+          "type": "text",
+          "props": {
+            "text": "CONDITION GREEN",
+            "size": "xs",
+            "weight": "bold",
+            "className": "px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-mono"
+          }
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "props": {
+        "text": "All primary defensive and propulsion arrays are functioning within nominal operating parameters.",
+        "size": "xs",
+        "className": "text-slate-300 leading-relaxed"
+      }
+    },
+    {
+      "type": "container",
+      "props": {
+        "direction": "horizontal",
+        "className": "grid grid-cols-3 gap-2 py-2"
+      },
+      "children": [
+        {
+          "type": "container",
+          "props": {
+            "className": "p-2 rounded-lg bg-white/5 border border-white/5 text-center flex flex-col items-center"
+          },
+          "children": [
+            {
+              "type": "text",
+              "props": {
+                "text": "SHIELDS",
+                "size": "xs",
+                "className": "text-[10px] text-slate-400 font-mono uppercase"
+              }
+            },
+            {
+              "type": "text",
+              "props": {
+                "text": "{{shields_level}}",
+                "size": "sm",
+                "weight": "bold",
+                "className": "text-emerald-400 font-mono"
+              }
+            }
+          ]
+        },
+        {
+          "type": "container",
+          "props": {
+            "className": "p-2 rounded-lg bg-white/5 border border-white/5 text-center flex flex-col items-center"
+          },
+          "children": [
+            {
+              "type": "text",
+              "props": {
+                "text": "WARP CORE",
+                "size": "xs",
+                "className": "text-[10px] text-slate-400 font-mono uppercase"
+              }
+            },
+            {
+              "type": "text",
+              "props": {
+                "text": "{{warp_status}}",
+                "size": "sm",
+                "weight": "bold",
+                "className": "text-cyan-400 font-mono"
+              }
+            }
+          ]
+        },
+        {
+          "type": "container",
+          "props": {
+            "className": "p-2 rounded-lg bg-white/5 border border-white/5 text-center flex flex-col items-center"
+          },
+          "children": [
+            {
+              "type": "text",
+              "props": {
+                "text": "SENSORS",
+                "size": "xs",
+                "className": "text-[10px] text-slate-400 font-mono uppercase"
+              }
+            },
+            {
+              "type": "text",
+              "props": {
+                "text": "{{sensors_status}}",
+                "size": "sm",
+                "weight": "bold",
+                "className": "text-emerald-400 font-mono"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "props": {
+        "direction": "horizontal",
+        "className": "flex items-center gap-2 pt-2 border-t border-white/10"
+      },
+      "children": [
+        {
+          "type": "button",
+          "props": {
+            "label": "Dock in Side Bar ↗",
+            "actionUrl": "agent://open_tactical_sidebar",
+            "styling": {
+              "colorTheme": "emerald"
+            }
+          }
+        },
+        {
+          "type": "button",
+          "props": {
+            "label": "Launch App Mode 🚀",
+            "actionUrl": "agent://launch_tactical_app",
+            "styling": {
+              "colorTheme": "blue"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,204 @@
+{
+  "type": "container",
+  "props": {
+    "direction": "vertical",
+    "gap": "sm",
+    "padding": "md",
+    "className": "flex flex-col gap-3 p-3 bg-[#121214] text-white font-sans"
+  },
+  "children": [
+    {
+      "type": "container",
+      "props": {
+        "direction": "horizontal",
+        "className": "flex items-center justify-between pb-2 border-b border-white/10"
+      },
+      "children": [
+        {
+          "type": "text",
+          "props": {
+            "text": "TACTICAL SYSTEMS CONSOLE",
+            "size": "sm",
+            "weight": "bold",
+            "className": "text-white tracking-wider font-mono"
+          }
+        },
+        {
+          "type": "text",
+          "props": {
+            "text": "SIDEBAR DOCK",
+            "size": "xs",
+            "weight": "bold",
+            "className": "px-1.5 py-0.5 rounded bg-brand-500/20 text-brand-300 border border-brand-500/30 text-[10px] font-mono"
+          }
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs",
+        "className": "flex flex-col gap-2"
+      },
+      "children": [
+        {
+          "type": "container",
+          "props": {
+            "className": "p-3 rounded-xl bg-[#1C1C1E] border border-white/5 flex flex-col gap-1.5"
+          },
+          "children": [
+            {
+              "type": "container",
+              "props": {
+                "direction": "horizontal",
+                "className": "flex items-center justify-between"
+              },
+              "children": [
+                {
+                  "type": "text",
+                  "props": {
+                    "text": "DEFENSIVE SHIELDS",
+                    "size": "xs",
+                    "weight": "bold",
+                    "className": "text-white font-mono"
+                  }
+                },
+                {
+                  "type": "text",
+                  "props": {
+                    "text": "OPTIMAL • {{shields_power}}%",
+                    "size": "xs",
+                    "className": "text-emerald-400 font-mono font-bold"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "props": {
+                "text": "Multi-phase deflector shields active. Forward and aft emitters balanced.",
+                "size": "xs",
+                "className": "text-slate-400 text-[11px]"
+              }
+            }
+          ]
+        },
+        {
+          "type": "container",
+          "props": {
+            "className": "p-3 rounded-xl bg-[#1C1C1E] border border-white/5 flex flex-col gap-1.5"
+          },
+          "children": [
+            {
+              "type": "container",
+              "props": {
+                "direction": "horizontal",
+                "className": "flex items-center justify-between"
+              },
+              "children": [
+                {
+                  "type": "text",
+                  "props": {
+                    "text": "WARP PROPULSION",
+                    "size": "xs",
+                    "weight": "bold",
+                    "className": "text-white font-mono"
+                  }
+                },
+                {
+                  "type": "text",
+                  "props": {
+                    "text": "NOMINAL • {{warp_power}}%",
+                    "size": "xs",
+                    "className": "text-cyan-400 font-mono font-bold"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "props": {
+                "text": "Matter/antimatter reaction matrix synchronized at warp factor 5.",
+                "size": "xs",
+                "className": "text-slate-400 text-[11px]"
+              }
+            }
+          ]
+        },
+        {
+          "type": "container",
+          "props": {
+            "className": "p-3 rounded-xl bg-[#1C1C1E] border border-white/5 flex flex-col gap-1.5"
+          },
+          "children": [
+            {
+              "type": "container",
+              "props": {
+                "direction": "horizontal",
+                "className": "flex items-center justify-between"
+              },
+              "children": [
+                {
+                  "type": "text",
+                  "props": {
+                    "text": "LONG-RANGE SENSORS",
+                    "size": "xs",
+                    "weight": "bold",
+                    "className": "text-white font-mono"
+                  }
+                },
+                {
+                  "type": "text",
+                  "props": {
+                    "text": "ACTIVE • {{sensors_power}}%",
+                    "size": "xs",
+                    "className": "text-emerald-400 font-mono font-bold"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "props": {
+                "text": "Tachyon sweep sweeping adjacent quadrant sectors. Zero threats.",
+                "size": "xs",
+                "className": "text-slate-400 text-[11px]"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs",
+        "className": "flex flex-col gap-2 pt-2 border-t border-white/10"
+      },
+      "children": [
+        {
+          "type": "button",
+          "props": {
+            "label": "Save Settings to Database 💾",
+            "actionUrl": "agent://save_tactical_state",
+            "styling": {
+              "colorTheme": "emerald"
+            }
+          }
+        },
+        {
+          "type": "button",
+          "props": {
+            "label": "Launch Full App Mode 🚀",
+            "actionUrl": "agent://launch_tactical_app",
+            "styling": {
+              "colorTheme": "blue"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

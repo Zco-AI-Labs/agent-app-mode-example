@@ -1,0 +1,365 @@
+{
+  "type": "container",
+  "props": {
+    "direction": "vertical",
+    "gap": "md",
+    "className": "w-full h-full flex flex-col gap-4 p-4 bg-[#0A0A0C] text-slate-100 font-sans select-none"
+  },
+  "children": [
+    {
+      "type": "container",
+      "props": {
+        "direction": "horizontal",
+        "className": "flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-3 border-b border-white/10 shrink-0"
+      },
+      "children": [
+        {
+          "type": "container",
+          "props": {
+            "className": "flex flex-col"
+          },
+          "children": [
+            {
+              "type": "text",
+              "props": {
+                "text": "USS HUBSCAPE • TACTICAL OPERATIONS",
+                "size": "lg",
+                "weight": "bold",
+                "className": "text-white font-mono tracking-wide"
+              }
+            },
+            {
+              "type": "text",
+              "props": {
+                "text": "FULL-SCREEN CANVAS STAGE • COMPANION SYNCHRONIZED",
+                "size": "xs",
+                "className": "text-slate-400 font-mono text-[11px]"
+              }
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "props": {
+            "text": "CONDITION {{alert_level}} • BATTLE READY",
+            "size": "xs",
+            "weight": "bold",
+            "className": "px-3 py-1 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-mono"
+          }
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "props": {
+        "className": "grid grid-cols-1 md:grid-cols-2 gap-4 flex-1 min-h-0 overflow-y-auto"
+      },
+      "children": [
+        {
+          "type": "container",
+          "props": {
+            "className": "p-5 rounded-2xl bg-[#121214] border border-emerald-500/30 shadow-lg flex flex-col justify-between"
+          },
+          "children": [
+            {
+              "type": "container",
+              "props": {
+                "direction": "vertical",
+                "gap": "xs"
+              },
+              "children": [
+                {
+                  "type": "container",
+                  "props": {
+                    "direction": "horizontal",
+                    "className": "flex items-center justify-between"
+                  },
+                  "children": [
+                    {
+                      "type": "text",
+                      "props": {
+                        "text": "DEFENSIVE SHIELDS",
+                        "size": "md",
+                        "weight": "bold",
+                        "className": "text-white font-mono"
+                      }
+                    },
+                    {
+                      "type": "text",
+                      "props": {
+                        "text": "ONLINE",
+                        "size": "xs",
+                        "weight": "bold",
+                        "className": "px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-mono"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "props": {
+                    "text": "Forward and aft deflector screens actively deflecting particle radiation and micrometeorites.",
+                    "size": "xs",
+                    "className": "text-slate-400 leading-relaxed"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "container",
+              "props": {
+                "direction": "horizontal",
+                "className": "flex items-center justify-between pt-3 border-t border-white/5 font-mono text-xs"
+              },
+              "children": [
+                {
+                  "type": "text",
+                  "props": {
+                    "text": "POWER OUTPUT",
+                    "className": "text-slate-400"
+                  }
+                },
+                {
+                  "type": "text",
+                  "props": {
+                    "text": "{{shields_power}}%",
+                    "weight": "bold",
+                    "className": "text-emerald-400 text-sm"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "container",
+          "props": {
+            "className": "p-5 rounded-2xl bg-[#121214] border border-cyan-500/30 shadow-lg flex flex-col justify-between"
+          },
+          "children": [
+            {
+              "type": "container",
+              "props": {
+                "direction": "vertical",
+                "gap": "xs"
+              },
+              "children": [
+                {
+                  "type": "container",
+                  "props": {
+                    "direction": "horizontal",
+                    "className": "flex items-center justify-between"
+                  },
+                  "children": [
+                    {
+                      "type": "text",
+                      "props": {
+                        "text": "WARP DRIVE",
+                        "size": "md",
+                        "weight": "bold",
+                        "className": "text-white font-mono"
+                      }
+                    },
+                    {
+                      "type": "text",
+                      "props": {
+                        "text": "OPTIMAL",
+                        "size": "xs",
+                        "weight": "bold",
+                        "className": "px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 text-[10px] font-mono"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "props": {
+                    "text": "Dilithium articulation frame operating at 99.8% thermal efficiency.",
+                    "size": "xs",
+                    "className": "text-slate-400 leading-relaxed"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "container",
+              "props": {
+                "direction": "horizontal",
+                "className": "flex items-center justify-between pt-3 border-t border-white/5 font-mono text-xs"
+              },
+              "children": [
+                {
+                  "type": "text",
+                  "props": {
+                    "text": "WARP FACTOR",
+                    "className": "text-slate-400"
+                  }
+                },
+                {
+                  "type": "text",
+                  "props": {
+                    "text": "{{warp_power}}%",
+                    "weight": "bold",
+                    "className": "text-cyan-400 text-sm"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "container",
+          "props": {
+            "className": "p-5 rounded-2xl bg-[#121214] border border-white/10 shadow-lg flex flex-col justify-between"
+          },
+          "children": [
+            {
+              "type": "container",
+              "props": {
+                "direction": "vertical",
+                "gap": "xs"
+              },
+              "children": [
+                {
+                  "type": "container",
+                  "props": {
+                    "direction": "horizontal",
+                    "className": "flex items-center justify-between"
+                  },
+                  "children": [
+                    {
+                      "type": "text",
+                      "props": {
+                        "text": "TACTICAL SENSORS",
+                        "size": "md",
+                        "weight": "bold",
+                        "className": "text-white font-mono"
+                      }
+                    },
+                    {
+                      "type": "text",
+                      "props": {
+                        "text": "SCANNING",
+                        "size": "xs",
+                        "weight": "bold",
+                        "className": "px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-mono"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "props": {
+                    "text": "Multi-spectral sensors active. Resolving spatial anomalies and navigation markers.",
+                    "size": "xs",
+                    "className": "text-slate-400 leading-relaxed"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "container",
+              "props": {
+                "direction": "horizontal",
+                "className": "flex items-center justify-between pt-3 border-t border-white/5 font-mono text-xs"
+              },
+              "children": [
+                {
+                  "type": "text",
+                  "props": {
+                    "text": "RESOLUTION",
+                    "className": "text-slate-400"
+                  }
+                },
+                {
+                  "type": "text",
+                  "props": {
+                    "text": "{{sensors_power}}%",
+                    "weight": "bold",
+                    "className": "text-emerald-400 text-sm"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "container",
+          "props": {
+            "className": "p-5 rounded-2xl bg-[#121214] border border-white/10 shadow-lg flex flex-col justify-between"
+          },
+          "children": [
+            {
+              "type": "container",
+              "props": {
+                "direction": "vertical",
+                "gap": "xs"
+              },
+              "children": [
+                {
+                  "type": "container",
+                  "props": {
+                    "direction": "horizontal",
+                    "className": "flex items-center justify-between"
+                  },
+                  "children": [
+                    {
+                      "type": "text",
+                      "props": {
+                        "text": "SUBSPACE COMMS",
+                        "size": "md",
+                        "weight": "bold",
+                        "className": "text-white font-mono"
+                      }
+                    },
+                    {
+                      "type": "text",
+                      "props": {
+                        "text": "ONLINE",
+                        "size": "xs",
+                        "weight": "bold",
+                        "className": "px-2 py-0.5 rounded bg-brand-500/20 text-brand-300 border border-brand-500/30 text-[10px] font-mono"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "props": {
+                    "text": "Subspace transceiver linked to Starfleet Command relay network.",
+                    "size": "xs",
+                    "className": "text-slate-400 leading-relaxed"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "container",
+              "props": {
+                "direction": "horizontal",
+                "className": "flex items-center justify-between pt-3 border-t border-white/5 font-mono text-xs"
+              },
+              "children": [
+                {
+                  "type": "text",
+                  "props": {
+                    "text": "SIGNAL STRENGTH",
+                    "className": "text-slate-400"
+                  }
+                },
+                {
+                  "type": "text",
+                  "props": {
+                    "text": "100%",
+                    "weight": "bold",
+                    "className": "text-brand-300 text-sm"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
