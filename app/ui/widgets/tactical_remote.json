@@ -26,7 +26,7 @@
         {
           "type": "text",
           "props": {
-            "text": "SYNCED",
+            "text": "CANVAS SYNCED",
             "size": "xs",
             "className": "text-[10px] text-emerald-400 font-mono"
           }
@@ -59,7 +59,7 @@
               "type": "button",
               "props": {
                 "label": "GREEN",
-                "actionUrl": "agent://set_alert_green?alert=GREEN",
+                "actionUrl": "app://set_alert?alert_level=GREEN&announcement=Condition%20GREEN%20restored.%20All%20systems%20operating%20within%20nominal%20parameters.",
                 "styling": {
                   "colorTheme": "emerald"
                 }
@@ -69,7 +69,7 @@
               "type": "button",
               "props": {
                 "label": "YELLOW",
-                "actionUrl": "agent://set_alert_yellow?alert=YELLOW",
+                "actionUrl": "app://set_alert?alert_level=YELLOW&announcement=Condition%20YELLOW%20declared.%20Heightened%20readiness%20energized.",
                 "styling": {
                   "colorTheme": "amber"
                 }
@@ -79,13 +79,71 @@
               "type": "button",
               "props": {
                 "label": "RED",
-                "actionUrl": "agent://set_alert_red?alert=RED",
+                "actionUrl": "app://set_alert?alert_level=RED&announcement=Condition%20RED!%20Battle%20stations%20manned.%20Emergency%20power%20diverted.",
                 "styling": {
                   "colorTheme": "red"
                 }
               }
             }
           ]
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs",
+        "className": "pt-2 border-t border-white/5 flex flex-col gap-2"
+      },
+      "children": [
+        {
+          "type": "text",
+          "props": {
+            "text": "SUBSYSTEM POWER ALLOCATION",
+            "size": "xs",
+            "className": "text-[10px] font-mono uppercase text-slate-400"
+          }
+        },
+        {
+          "type": "slider",
+          "props": {
+            "name": "shields_power",
+            "min": 0,
+            "max": 100,
+            "label": "Defensive Shields",
+            "colorTheme": "emerald"
+          }
+        },
+        {
+          "type": "slider",
+          "props": {
+            "name": "warp_power",
+            "min": 0,
+            "max": 100,
+            "label": "Warp Propulsion",
+            "colorTheme": "blue"
+          }
+        },
+        {
+          "type": "slider",
+          "props": {
+            "name": "sensors_power",
+            "min": 0,
+            "max": 100,
+            "label": "Tactical Sensors",
+            "colorTheme": "emerald"
+          }
+        },
+        {
+          "type": "slider",
+          "props": {
+            "name": "aux_power",
+            "min": 0,
+            "max": 100,
+            "label": "Auxiliary Power",
+            "colorTheme": "amber"
+          }
         }
       ]
     },
@@ -116,7 +174,7 @@
               "type": "button",
               "props": {
                 "label": "Boost Shields ⚡",
-                "actionUrl": "agent://boost_shields",
+                "actionUrl": "app://boost_shields?shields_power=100&announcement=Defensive%20shields%20boosted%20to%20100%25%20maximum%20output.",
                 "styling": {
                   "colorTheme": "emerald"
                 }
@@ -125,10 +183,30 @@
             {
               "type": "button",
               "props": {
-                "label": "Sensor Sweep 📡",
-                "actionUrl": "agent://scan_sector",
+                "label": "Engage Warp 🚀",
+                "actionUrl": "app://engage_warp?warp_power=95&announcement=Warp%20engines%20engaged%20at%20warp%20factor%209.5.",
                 "styling": {
                   "colorTheme": "blue"
+                }
+              }
+            },
+            {
+              "type": "button",
+              "props": {
+                "label": "Sensor Sweep 📡",
+                "actionUrl": "app://scan_sector?sensors_power=100&announcement=Tactical%20sensors%20conducting%20full-frequency%20sector%20sweep.",
+                "styling": {
+                  "colorTheme": "blue"
+                }
+              }
+            },
+            {
+              "type": "button",
+              "props": {
+                "label": "Diagnostic 🔍",
+                "actionUrl": "app://diagnostic_sweep?aux_power=100&announcement=Level%204%20diagnostic%20sweep%20completed%20across%20all%20subsystems.",
+                "styling": {
+                  "colorTheme": "emerald"
                 }
               }
             }
@@ -148,7 +226,7 @@
           "type": "button",
           "props": {
             "label": "Save Settings to Database 💾",
-            "actionUrl": "agent://save_tactical_state",
+            "actionUrl": "app://save_tactical_state?announcement=Subsystem%20power%20configurations%20successfully%20saved%20to%20ship%20database.",
             "styling": {
               "colorTheme": "emerald"
             }

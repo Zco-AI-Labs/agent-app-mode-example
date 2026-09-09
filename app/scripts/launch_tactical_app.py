@@ -50,7 +50,8 @@ def launch_tactical_app(alert_level: str = "GREEN") -> dict:
             "alert_level": alert_level.upper(),
             "shields_power": 100,
             "warp_power": 80,
-            "sensors_power": 90
+            "sensors_power": 90,
+            "aux_power": 90
         }
     }
     
@@ -58,7 +59,11 @@ def launch_tactical_app(alert_level: str = "GREEN") -> dict:
         "widgetId": "tactical_remote",
         "widgetConfig": remote_config,
         "data": {
-            "alert_level": alert_level.upper()
+            "alert_level": alert_level.upper(),
+            "shields_power": 100,
+            "warp_power": 80,
+            "sensors_power": 90,
+            "aux_power": 90
         }
     }
     
