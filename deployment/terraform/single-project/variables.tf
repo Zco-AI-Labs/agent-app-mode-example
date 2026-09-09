@@ -6,7 +6,7 @@
 #
 #     https://www.apache.org/licenses/LICENSE-2.0
 #
-# Unless required by applicable law or agreed to in writing, software
+# Unless required by tactical-operations-agentlicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
@@ -15,7 +15,7 @@
 variable "project_name" {
   type        = string
   description = "Project name used as a base for resource naming"
-  default     = "app"
+  default     = "tactical-operations-agent"
 }
 
 variable "project_id" {
@@ -32,17 +32,17 @@ variable "region" {
 variable "telemetry_logs_filter" {
   type        = string
   description = "Log Sink filter for capturing telemetry data. Captures logs with the `traceloop.association.properties.log_type` attribute set to `tracing`."
-  default     = "labels.service_name=\"app\" labels.type=\"agent_telemetry\""
+  default     = "labels.service_name=\"tactical-operations-agent\" labels.type=\"agent_telemetry\""
 }
 
 variable "feedback_logs_filter" {
   type        = string
   description = "Log Sink filter for capturing feedback data. Captures logs where the `log_type` field is `feedback`."
-  default     = "jsonPayload.log_type=\"feedback\" jsonPayload.service_name=\"app\""
+  default     = "jsonPayload.log_type=\"feedback\" jsonPayload.service_name=\"tactical-operations-agent\""
 }
 
-variable "app_sa_roles" {
-  description = "List of roles to assign to the application service account"
+variable "tactical-operations-agent_sa_roles" {
+  description = "List of roles to assign to the tactical-operations-agentlication service account"
   type        = list(string)
   default = [
 

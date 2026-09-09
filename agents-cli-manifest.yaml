@@ -1,4 +1,4 @@
-name: "tactical-operations-agent"
+name: tactical-operations-agent
 acli_version: 1.1.0
 agent_directory: app
 region: us-central1
