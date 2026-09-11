@@ -76,14 +76,36 @@
             {
               "type": "button",
               "props": {
-                "label": "CONDITION {{alert_level}} • CYCLE STATUS ⚡",
-                "actionUrl": "app://cycle_alert",
+                "label": "RED ALERT 🚨",
+                "actionUrl": "app://set_alert?alert_level=RED&announcement=Condition+RED+declared+from+Tactical+Console!",
                 "styling": {
-                  "colorTheme": "amber"
+                  "colorTheme": "red"
                 }
               }
             }
           ]
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "props": {
+        "className": "w-full p-3 rounded-2xl bg-gradient-to-r from-red-950/40 via-amber-950/20 to-slate-900/50 border border-amber-500/30 flex items-center justify-between font-mono text-xs shadow-md shrink-0"
+      },
+      "children": [
+        {
+          "type": "text",
+          "props": {
+            "text": "STATUS: CONDITION {{alert_level}} // EPS MATRIX LINK ACTIVE",
+            "className": "text-amber-400 font-bold font-mono tracking-widest text-xs"
+          }
+        },
+        {
+          "type": "text",
+          "props": {
+            "text": "DEFENSE SUBSYSTEMS SYNCHRONIZED • STARDATE {{stardate}}",
+            "className": "text-slate-400 font-mono tracking-wider text-[11px] hidden sm:inline"
+          }
         }
       ]
     },
