@@ -84,12 +84,16 @@ def test_launch_tactical_app_tool():
     assert app_config["remoteWidget"]["widgetId"] == "tactical_remote"
     assert app_config["remoteWidget"]["data"]["alert_level"] == "YELLOW"
     
-    # Check toolbar save action
-    assert len(app_config["actions"]) == 1
+    # Check toolbar save and moon phase actions
+    assert len(app_config["actions"]) == 2
     save_act = app_config["actions"][0]
     assert save_act["id"] == "save_state"
     assert save_act["actionType"] == "chat_command"
     assert save_act["showFeedback"] is True
+    moon_act = app_config["actions"][1]
+    assert moon_act["id"] == "get_moon_phase"
+    assert moon_act["actionType"] == "api_call"
+    assert moon_act["endpoint"] == "/api/sandbox/emulator/proxy_request"
 
 
 def test_save_tactical_state_tool():

@@ -79,6 +79,21 @@ def launch_tactical_app(alert_level: str = "GREEN") -> dict:
             "actionType": "chat_command",
             "command": "Save current tactical settings: alert_level={{alert_level}}, shields_power={{shields_power}}, warp_power={{warp_power}}, sensors_power={{sensors_power}}, aux_power={{aux_power}}",
             "showFeedback": True
+        },
+        {
+            "id": "get_moon_phase",
+            "label": "Moon Phase",
+            "icon": "Moon",
+            "actionType": "api_call",
+            "endpoint": "/api/sandbox/emulator/proxy_request",
+            "method": "POST",
+            "payload": {
+                "port": 8094,
+                "method": "GET",
+                "endpoint": "/moon-phase"
+            },
+            "showFeedback": True,
+            "successLabel": "Phase Loaded"
         }
     ]
     
