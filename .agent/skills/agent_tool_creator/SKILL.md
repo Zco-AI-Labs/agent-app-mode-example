@@ -369,13 +369,31 @@ def launch_mission_console(mission_id: str) -> dict:
         }
 
         # 2. Define optional companion remote controller for the Side Bar dock
+        # Supports both backend agent:// actions and zero-LLM app:// bridge actions
         remote_widget = {
             "widgetConfig": {
                 "type": "container",
                 "props": {"gap": "sm", "padding": "md"},
                 "children": [
                     {"type": "text", "props": {"text": f"Mission {mission_id} Controls", "weight": "bold"}},
-                    {"type": "button", "props": {"label": "Scan Sector", "actionUrl": f"agent://{context.agent_id}/scan_sector"}}
+                    # Zero-LLM action: updates shared state and chat with 0ms latency
+                    {
+                        "type": "button",
+                        "props": {
+                            "label": "Red Alert",
+                            "actionUrl": "app://set_alert?alert_level=RED&announcement=Condition+Red+declared!",
+                            "styling": {"colorTheme": "red"}
+                        }
+                    },
+                    # Backend action: invokes Python tool on agent
+                    {
+                        "type": "button",
+                        "props": {
+                            "label": "Deep Scan",
+                            "actionUrl": f"agent://{context.agent_id}/scan_sector",
+                            "styling": {"colorTheme": "indigo"}
+                        }
+                    }
                 ]
             }
         }

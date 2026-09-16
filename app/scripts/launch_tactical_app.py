@@ -77,7 +77,7 @@ def launch_tactical_app(alert_level: str = "GREEN") -> dict:
             "label": "Save Console Settings",
             "icon": "Save",
             "actionType": "chat_command",
-            "command": "Save current tactical settings",
+            "command": "Save current tactical settings: alert_level={{alert_level}}, shields_power={{shields_power}}, warp_power={{warp_power}}, sensors_power={{sensors_power}}, aux_power={{aux_power}}",
             "showFeedback": True
         }
     ]

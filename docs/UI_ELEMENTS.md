@@ -123,6 +123,8 @@ Renders a container box to group children. Use Tailwind classes to design grids,
 
 ### Props:
 * `className` (string): Standard Tailwind CSS utility classes.
+  * **Smart Default Classes:** If no custom classes are supplied, containers default to `p-4 border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm rounded-lg flex flex-col`.
+  * **Layout Overrides:** When `className` includes custom layout (`flex`, `grid`), padding (`p-*`), border (`border*`), or background (`bg-*`), the default card background and borders are automatically omitted. This allows seamless nested components, LCARS consoles, status panels, and dense dashboard grids without fighting default card padding and borders.
 * `children` (array): A list of nested element configurations.
 
 ### Example JSON:
@@ -149,6 +151,7 @@ Displays formatted text blocks.
 ### Props:
 * `text` (string): Text content to display. Supports variable interpolations if loaded from a widget template.
 * `className` (string): Tailwind CSS classes for size, color, weight, and layout (e.g. `text-lg font-semibold text-slate-800`).
+  * **Dark Mode Color Preservation:** If `className` defines an explicit text color (e.g. `text-amber-400`, `text-emerald-400`, `text-red-500`, `text-[#ff9900]`), the default dark-mode text color (`dark:text-slate-100`) is automatically bypassed, ensuring high-contrast sci-fi accents, badges, and alerts render cleanly in dark mode.
 
 ### Example JSON:
 ```json
@@ -167,12 +170,15 @@ Displays formatted text blocks.
 Renders an interactive button. When clicked, it packages the input values of all elements inside its container parent and dispatches an action to the target `actionUrl`.
 
 > [!IMPORTANT]
-> **Atomic Viewport Rule:** Only ONE interactive form or widget can be active in the viewport at a time. The button props below control whether the widget transitions into a read-only receipt upon submission or immediately collapses.
+> **Atomic Viewport Rule:** In inline chat mode, only ONE interactive form or widget can be active in the viewport at a time. The button props below control whether the widget transitions into a read-only receipt upon submission or immediately collapses. In the Side Bar or App Mode, widgets remain persistently active.
 
 ### Props:
 * `label` (string): Button display text (default: `"Submit"`).
 * `actionUrl` (string): Target destination URL or protocol URI:
   * `agent://<agent_id>/<action_name>`: Deterministically dispatches action to target agent without Host LLM ambiguity.
+  * `app://<action_name>?<key>=<value>&announcement=<text>`: **Zero-LLM Local Bridge Protocol for App Mode.** Instantly dispatches client-side state updates between the companion remote dock and canvas stage with **0ms latency and 0 LLM token cost**. Query parameters automatically parse (strings, numbers, booleans) into the shared application state. Special query parameters:
+    * `announcement`: Formats and appends a local announcement directly to the companion chat timeline without triggering an LLM agent turn.
+    * `silent=true`: Suppresses chat announcements entirely.
   * `client://close_widget?text=...`: Immediately cancels and unmounts the widget client-side with 0 network calls.
   * HTTP Endpoint: Standard POST path (e.g. `/api/plugins/{{agent_id}}/update_settings`).
 * `closeOnClick` (boolean): When `true`, performs an **instant 0ms optimistic collapse**, immediately unmounting the widget upon valid submission and displaying the confirmation text. When `false` or omitted, defaults to **Read-Only Receipt Mode** where the form locks in place.
@@ -180,7 +186,9 @@ Renders an interactive button. When clicked, it packages the input values of all
   * In *Optimistic Collapse Mode* (`closeOnClick: true`), this text is displayed in the chat message in place of the collapsed form.
   * In *Read-Only Receipt Mode*, this text is displayed inside the green status badge replacing the submit button.
 * `hideOnSubmit` (boolean): When `true`, this button is automatically hidden once the form has been submitted (ideal for Cancel/Dismiss buttons).
-* `styling` (object): Theme styling object (e.g. `{"colorTheme": "indigo" | "pink" | "blue" | "slate"}`).
+* `styling` (object): Theme styling object:
+  * `colorTheme` (string): Supported themes: `"blue"`, `"red"`, `"green"`, `"emerald"`, `"amber"`, `"indigo"`, `"violet"`.
+  * `borderRadius` (string): `"none"`, `"sm"`, `"md"`, `"lg"`, `"xl"`, `"full"`.
 * `className` (string): Tailwind CSS utility styling classes.
 
 ### Example 1: Submit Button with Optimistic Collapse (`closeOnClick: true`)
@@ -210,7 +218,19 @@ Renders an interactive button. When clicked, it packages the input values of all
 }
 ```
 
-### Example 3: Submit Button with Read-Only Receipt Transition (Default)
+### Example 3: App Mode Local Zero-LLM Remote Action (`app://`)
+```json
+{
+  "type": "button",
+  "props": {
+    "label": "Activate Turbo",
+    "actionUrl": "app://set_speed?speed=100&turbo=true&announcement=Turbo+mode+engaged!",
+    "styling": { "colorTheme": "emerald" }
+  }
+}
+```
+
+### Example 4: Submit Button with Read-Only Receipt Transition (Default)
 ```json
 {
   "type": "button",

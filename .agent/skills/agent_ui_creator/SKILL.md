@@ -35,6 +35,26 @@ Every widget template consists of a root layout component (usually a `container`
 
 ---
 
+## 📍 The 3 Spatial Viewport Targets (Chat vs. Side Bar vs. App Mode)
+
+Agents can render widgets into three distinct spatial surfaces:
+
+1. **Inline Chat (`target="inline"`, Default):**
+   - Renders directly in the conversational message history.
+   - Ideal for brief surveys, confirmations, and sequential forms.
+   - Converts to a read-only receipt upon submission (or collapses if `closeOnClick: true`).
+2. **Tactical Side Bar (`target="sidebar"`):**
+   - Docks persistently into the 384px (`w-96`) right drawer / side bar on desktop.
+   - Leaves a sleek bookmark card in chat (`[ {Title} ready in Side Bar ↗ ]`).
+   - Ideal for dashboards, live telemetry, task lists, and reference cards that users interact with while chatting.
+3. **Full-Screen App Mode (`context.launch_app_mode`):**
+   - Promotes the main viewport into a full-screen application canvas (`canvas_widget`).
+   - Docks an optional companion remote control (`remote_widget`) in the top 65% of the Side Bar dock, above the bottom 35% companion chat.
+   - Provides a top application toolbar with `[ EXIT APP ]` and agent tool action buttons.
+   - Ideal for expansive visual applications (interactive maps, game boards, LCARS consoles, full editors, iframes).
+
+---
+
 ## 🧱 Core Component Catalog & Props
 
 > [!IMPORTANT]
@@ -51,6 +71,7 @@ Groups and aligns nested components.
   * `gap` (string): `"xs"`, `"sm"`, `"md"`, `"lg"`
   * `padding` (string): `"xs"`, `"sm"`, `"md"`, `"lg"`
   * `className` (string): Optional custom Tailwind utility classes for advanced styling.
+    * **Smart Card Defaults vs. Layout Overrides:** If no custom classes are supplied, containers render as a standard white/slate card with padding and border. When `className` provides layout (`flex`, `grid`), padding (`p-*`), border (`border*`), or background (`bg-*`), the default card styling is automatically omitted. This allows seamless nested components, LCARS interfaces, status panels, and dense dashboards without fighting default borders or padding.
 
 ### 2. Text (`text`)
 Displays headings, labels, or paragraphs.
@@ -59,6 +80,7 @@ Displays headings, labels, or paragraphs.
   * `size` (string): `"xs"`, `"sm"`, `"md"`, `"lg"`, `"xl"`
   * `weight` (string): `"normal"`, `"medium"`, `"bold"`
   * `className` (string): Optional Tailwind overrides.
+    * **Dark Mode Color Preservation:** If `className` defines an explicit text color (e.g. `text-amber-400`, `text-emerald-400`, `text-red-500`), the default dark-mode text color is automatically bypassed, ensuring high-contrast accents and alert statuses render cleanly in dark mode.
 
 ### 3. Input (`input`)
 Renders text fields, multi-line text areas, numeric entries, or date/time pickers.
@@ -78,10 +100,17 @@ Renders interactive submit/action buttons.
 * **Props:**
   * `label` (string): Display text of the button.
   * `actionUrl` (string): **REQUIRED.** The URI protocol to hit. Standard formats:
-    * `agent://<action_name>`: Intercepted by the platform to trigger an async slash command callback `/action <action_name> <payload>` back to the agent.
+    * `agent://<agent_id>/<action_name>`: Intercepted by the platform to trigger an async action command `/action <action_name> <payload>` back to the agent backend tool.
+    * `app://<action_name>?<key>=<value>&announcement=<text>`: **Zero-LLM Local Bridge Protocol for App Mode.** Instantly dispatches client-side state updates between the companion remote dock and canvas stage with **0ms latency and 0 LLM token cost**. Query parameters automatically parse into shared application state. Special query parameters:
+      * `announcement`: Dispatches a formatted announcement directly to companion chat without an LLM turn.
+      * `silent=true`: Suppresses chat announcements entirely.
+    * `client://close_widget?text=...`: Immediately cancels and unmounts the widget client-side with 0 network calls.
     * `/api/plugins/{{agent_id}}/<route>`: Direct API POST call to the agent's webserver.
+  * `closeOnClick` (boolean): When `true`, performs an instant 0ms optimistic collapse. When `false` or omitted, form locks into a read-only receipt upon submission.
+  * `submittedLabel` (string): Confirmation badge or message text shown upon submit.
   * `styling` (object):
-    * `colorTheme` (string): Accent color palette (e.g. `"blue"`, `"green"`, `"red"`).
+    * `colorTheme` (string): Accent color palette: `"blue"`, `"red"`, `"green"`, `"emerald"`, `"amber"`, `"indigo"`, `"violet"`.
+    * `borderRadius` (string): `"none"`, `"sm"`, `"md"`, `"lg"`, `"xl"`, `"full"`.
 
 ### 5. Live Error Banner (`live-error-banner`)
 Renders a standardized error alert card for live monitoring process failures with diagnostic details expander and optional retry actions.

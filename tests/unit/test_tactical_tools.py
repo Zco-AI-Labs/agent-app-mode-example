@@ -111,7 +111,8 @@ def test_save_tactical_state_tool():
             alert_level="RED",
             shields_power=100,
             warp_power=50,
-            sensors_power=75
+            sensors_power=75,
+            aux_power=80
         )
         
     assert res["status"] == "success"
@@ -122,6 +123,7 @@ def test_save_tactical_state_tool():
     assert saved["shields_power"] == 100
     assert saved["warp_power"] == 50
     assert saved["sensors_power"] == 75
+    assert saved["aux_power"] == 80
     assert saved["version"] == 1
     assert saved["created_by"] == "riker_user_1"
     

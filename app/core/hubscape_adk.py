@@ -49,6 +49,11 @@ class RemoteContext:
         return self.raw_context.get("user_privileges") or self.raw_context.get("userPrivileges") or []
 
     @property
+    def session_metadata(self) -> dict:
+        meta = self.raw_context.get("session_metadata") or self.raw_context.get("sessionMetadata")
+        return meta if isinstance(meta, dict) else ({"value": meta} if meta else {})
+
+    @property
     def base_url(self) -> str:
         return (
             self.raw_context.get("base_url")

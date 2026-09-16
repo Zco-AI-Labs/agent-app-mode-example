@@ -9,7 +9,8 @@ def save_tactical_state(
     alert_level: str = "GREEN",
     shields_power: int = 100,
     warp_power: int = 80,
-    sensors_power: int = 90
+    sensors_power: int = 90,
+    aux_power: int = 75
 ) -> dict:
     """Persists current tactical console settings and subsystem power allocations to the user's scoped database.
     
@@ -20,6 +21,7 @@ def save_tactical_state(
         shields_power: Shields subsystem power percentage (0-100). Defaults to 100.
         warp_power: Warp core power percentage (0-100). Defaults to 80.
         sensors_power: Sensor array power percentage (0-100). Defaults to 90.
+        aux_power: Auxiliary power percentage (0-100). Defaults to 75.
 
     Returns:
         dict: Confirmation containing the saved record, version, and timestamp metadata.
@@ -30,7 +32,8 @@ def save_tactical_state(
         "alert_level": alert_level.upper(),
         "shields_power": int(shields_power),
         "warp_power": int(warp_power),
-        "sensors_power": int(sensors_power)
+        "sensors_power": int(sensors_power),
+        "aux_power": int(aux_power)
     }
     
     saved_record = context.save(

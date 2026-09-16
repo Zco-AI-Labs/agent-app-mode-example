@@ -128,6 +128,29 @@ This appends the `CLOSE_AGENT_WIDGET` action directive to the response payload:
 
 ---
 
+## 3.1 Zero-LLM Local Bridge Routing (`app://<action_name>`)
+
+When building App Mode companion remotes or interactive Lego widgets, buttons can dispatch actions with **0ms latency and 0 LLM cost** using the `app://` protocol:
+
+* **Format:** `app://<action_name>?<key>=<value>&announcement=<text>`
+* **Instant Client-Side Dispatch:** Handled entirely by the client-side `useAppBridge` event bus. Updates shared application state across both the canvas stage and companion remote without invoking an agent LLM turn.
+* **Automatic State Parsing:** All query parameters (e.g. `?shields=100&warp=9`) are parsed into strings, numbers, or booleans and merged into the shared application store, instantly triggering reactive re-renders in Lego containers and IFrames.
+* **Chat Timeline Announcements:** Passing `?announcement=Operation+complete` posts a formatted assistant status message to the companion chat history without triggering an LLM generation. (To suppress announcements, pass `?silent=true`).
+* **Domain State & Custom Banners:** Arbitrary state parameters passed via `app://` (such as `?status=active&mode=turbo`) update the shared state store instantly. Agents can render dynamic status indicators, alert banners, and telemetry gauges directly within their Lego widget trees that reactively re-render when these state keys update.
+
+```json
+{
+  "type": "button",
+  "props": {
+    "label": "High Priority",
+    "actionUrl": "app://set_priority?priority=high&announcement=Priority+updated+to+high.",
+    "styling": { "colorTheme": "amber" }
+  }
+}
+```
+
+---
+
 ## 4. Visual Sandboxed IFrames (`iframe`)
 
 For complex UIs requiring canvas interactions, dragging, or real-time editing, use the `iframe` Lego component to embed custom HTML files:
