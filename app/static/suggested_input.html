@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Suggested Results Input</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: transparent;
+      color: #f4f4f5;
+      padding: 12px;
+      user-select: none;
+    }
+
+    .widget-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .input-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      width: 16px;
+      height: 16px;
+      color: #71717a;
+      pointer-events: none;
+      transition: color 0.15s ease;
+    }
+
+    .styled-input {
+      width: 100%;
+      padding: 10px 36px 10px 36px;
+      background-color: #18181b;
+      color: #fafafa;
+      border: 1px solid #27272a;
+      border-radius: 8px;
+      font-size: 13px;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .styled-input:focus {
+      border-color: #10b981;
+      background-color: #09090b;
+      box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.15);
+    }
+
+    .styled-input:focus + .search-icon {
+      color: #10b981;
+    }
+
+    .clear-btn {
+      position: absolute;
+      right: 10px;
+      background: none;
+      border: none;
+      color: #71717a;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+      border-radius: 4px;
+    }
+
+    .clear-btn:hover {
+      color: #f4f4f5;
+      background-color: #27272a;
+    }
+
+    .clear-btn.visible {
+      display: flex;
+    }
+
+    /* Suggestions Dropdown Menu */
+    .suggestions-dropdown {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      right: 0;
+      background-color: #18181b;
+      border: 1px solid #27272a;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.6), 0 8px 10px -6px rgba(0, 0, 0, 0.6);
+      max-height: 160px;
+      overflow-y: auto;
+      z-index: 50;
+      display: none;
+      opacity: 0;
+      transform: translateY(-4px);
+      transition: opacity 0.15s ease, transform 0.15s ease;
+    }
+
+    .suggestions-dropdown.open {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .suggestion-item {
+      padding: 8px 12px;
+      font-size: 12px;
+      color: #d4d4d8;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+
+    .suggestion-item:hover,
+    .suggestion-item.active {
+      background-color: #27272a;
+      color: #10b981;
+    }
+
+    .suggestion-icon {
+      font-size: 13px;
+      opacity: 0.8;
+    }
+
+    .suggestion-text {
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .suggestion-badge {
+      font-size: 10px;
+      font-family: monospace;
+      color: #71717a;
+      background: #27272a;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .no-results {
+      padding: 12px;
+      font-size: 12px;
+      color: #71717a;
+      text-align: center;
+      font-style: italic;
+    }
+
+    /* Custom Scrollbar */
+    .suggestions-dropdown::-webkit-scrollbar {
+      width: 6px;
+    }
+    .suggestions-dropdown::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .suggestions-dropdown::-webkit-scrollbar-thumb {
+      background: #3f3f46;
+      border-radius: 3px;
+    }
+    .suggestions-dropdown::-webkit-scrollbar-thumb:hover {
+      background: #52525b;
+    }
+  </style>
+</head>
+<body>
+  <div class="widget-wrapper" id="widget-wrapper">
+    <div class="input-container">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <input
+        type="text"
+        id="suggested-input"
+        class="styled-input"
+        placeholder="Select or search a system..."
+        autocomplete="off"
+        spellcheck="false"
+      />
+      <button type="button" id="clear-btn" class="clear-btn" title="Clear selection">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Dropdown Menu -->
+    <div id="suggestions-dropdown" class="suggestions-dropdown">
+      <div id="suggestions-list"></div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // Suggestions state: Empty by default. Populated PURELY from data object or postMessage
+      let suggestions = [];
+
+      const input = document.getElementById("suggested-input");
+      const dropdown = document.getElementById("suggestions-dropdown");
+      const list = document.getElementById("suggestions-list");
+      const clearBtn = document.getElementById("clear-btn");
+      let activeIndex = -1;
+
+      // Safe parameter decoding helper (decodes URL-encoded JSON arrays from show_widget data)
+      function safeParseSuggestionsParam(rawParam) {
+        if (!rawParam || rawParam.trim().length === 0) return [];
+        try {
+          let decoded = rawParam;
+          try {
+            decoded = decodeURIComponent(rawParam);
+          } catch (e) {}
+
+          const parsed = JSON.parse(decoded);
+          if (Array.isArray(parsed)) {
+            return parsed.map(item => {
+              if (typeof item === "string") return { label: item, icon: "🔹", category: "" };
+              return {
+                label: item.label || item.name || item.title || String(item),
+                icon: item.icon || "🔹",
+                category: item.category || ""
+              };
+            });
+          }
+        } catch (e) {
+          // If not valid JSON, treat as comma-separated values
+          return rawParam.split(",").map(s => s.trim()).filter(Boolean).map(s => ({
+            label: s,
+            icon: "🔹",
+            category: ""
+          }));
+        }
+        return [];
+      }
+
+      function updateSuggestions(newItems) {
+        if (!Array.isArray(newItems)) return;
+        suggestions = newItems.map(item => {
+          if (typeof item === "string") return { label: item, icon: "🔹", category: "" };
+          return {
+            label: item.label || item.name || item.title || String(item),
+            icon: item.icon || "🔹",
+            category: item.category || ""
+          };
+        });
+        renderSuggestions(input.value);
+      }
+
+      // 1. Hydrate suggestions purely from URL parameters (passed directly from the data object)
+      const urlParams = new URLSearchParams(window.location.search);
+      const suggestionsParam = urlParams.get("suggestions") || urlParams.get("items") || urlParams.get("data");
+      if (suggestionsParam) {
+        suggestions = safeParseSuggestionsParam(suggestionsParam);
+      }
+
+      // 2. Inbound postMessage Listener (allows real-time updates without hardcoded values)
+      window.addEventListener("message", function(event) {
+        if (!event.data || typeof event.data !== "object") return;
+        const msg = event.data;
+
+        // Direct SET_SUGGESTIONS
+        if (msg.type === "SET_SUGGESTIONS" && Array.isArray(msg.payload)) {
+          updateSuggestions(msg.payload);
+        }
+        // Hubscape App Bridge event
+        else if (msg.type === "HUBSCAPE_APP_BRIDGE" && msg.detail) {
+          const detail = msg.detail;
+          if ((detail.type === "SET_SUGGESTIONS" || detail.action === "SET_SUGGESTIONS") && Array.isArray(detail.payload)) {
+            updateSuggestions(detail.payload);
+          } else if (detail.payload && Array.isArray(detail.payload.suggestions)) {
+            updateSuggestions(detail.payload.suggestions);
+          }
+        }
+        // Backend tool response
+        else if (msg.type === "TOOL_RESPONSE" && msg.payload) {
+          const payload = Array.isArray(msg.payload) ? msg.payload : (msg.payload.suggestions || []);
+          if (Array.isArray(payload) && payload.length > 0) {
+            updateSuggestions(payload);
+          }
+        }
+      });
+
+      // Outbound postMessage when user selects an item
+      function selectItem(item) {
+        input.value = item.label;
+        closeDropdown();
+        updateClearBtn();
+
+        try {
+          window.parent.postMessage({
+            type: "HUBSCAPE_APP_BRIDGE",
+            action: "POST_CHAT",
+            payload: {
+              text: `Selected Subsystem: ${item.label}`,
+              senderName: "Subsystem Controller"
+            }
+          }, "*");
+
+          window.parent.postMessage({
+            type: "HUBSCAPE_APP_BRIDGE",
+            action: "UPDATE_STATE",
+            payload: { selectedSubsystem: item.label }
+          }, "*");
+        } catch (e) {}
+      }
+
+      function renderSuggestions(filterText) {
+        const query = (filterText || "").trim().toLowerCase();
+        const filtered = suggestions.filter(s => s.label.toLowerCase().includes(query));
+
+        list.innerHTML = "";
+        activeIndex = -1;
+
+        if (suggestions.length === 0) {
+          const noRes = document.createElement("div");
+          noRes.className = "no-results";
+          noRes.textContent = "No suggestions loaded from data object";
+          list.appendChild(noRes);
+          return;
+        }
+
+        if (filtered.length === 0) {
+          const noRes = document.createElement("div");
+          noRes.className = "no-results";
+          noRes.textContent = "No matching systems found";
+          list.appendChild(noRes);
+          return;
+        }
+
+        filtered.forEach((item, idx) => {
+          const el = document.createElement("div");
+          el.className = "suggestion-item";
+          el.dataset.index = idx;
+          el.innerHTML = `
+            <span class="suggestion-icon">${item.icon}</span>
+            <span class="suggestion-text">${item.label}</span>
+            ${item.category ? `<span class="suggestion-badge">${item.category}</span>` : ""}
+          `;
+          el.addEventListener("mousedown", function(e) {
+            e.preventDefault();
+            selectItem(item);
+          });
+          list.appendChild(el);
+        });
+      }
+
+      function openDropdown() {
+        renderSuggestions(input.value);
+        dropdown.classList.add("open");
+      }
+
+      function closeDropdown() {
+        dropdown.classList.remove("open");
+        activeIndex = -1;
+      }
+
+      function updateClearBtn() {
+        clearBtn.classList.toggle("visible", input.value.length > 0);
+      }
+
+      input.addEventListener("focus", openDropdown);
+      input.addEventListener("click", openDropdown);
+      input.addEventListener("input", function() {
+        openDropdown();
+        updateClearBtn();
+      });
+
+      input.addEventListener("keydown", function(e) {
+        const items = list.querySelectorAll(".suggestion-item");
+        if (!dropdown.classList.contains("open") || items.length === 0) {
+          if (e.key === "ArrowDown") openDropdown();
+          return;
+        }
+
+        if (e.key === "ArrowDown") {
+          e.preventDefault();
+          activeIndex = (activeIndex + 1) % items.length;
+          highlightItem(items);
+        } else if (e.key === "ArrowUp") {
+          e.preventDefault();
+          activeIndex = (activeIndex - 1 + items.length) % items.length;
+          highlightItem(items);
+        } else if (e.key === "Enter") {
+          e.preventDefault();
+          if (activeIndex >= 0 && items[activeIndex]) {
+            items[activeIndex].dispatchEvent(new MouseEvent("mousedown"));
+          }
+        } else if (e.key === "Escape") {
+          closeDropdown();
+        }
+      });
+
+      function highlightItem(items) {
+        items.forEach((it, i) => {
+          it.classList.toggle("active", i === activeIndex);
+          if (i === activeIndex) it.scrollIntoView({ block: "nearest" });
+        });
+      }
+
+      document.addEventListener("click", function(e) {
+        const wrapper = document.getElementById("widget-wrapper");
+        if (!wrapper.contains(e.target)) {
+          closeDropdown();
+        }
+      });
+
+      clearBtn.addEventListener("click", function() {
+        input.value = "";
+        updateClearBtn();
+        input.focus();
+        openDropdown();
+      });
+
+      // Initial render (shows empty/data state)
+      renderSuggestions("");
+    })();
+  </script>
+</body>
+</html>
