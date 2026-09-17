@@ -569,27 +569,56 @@ Renders vertical progress indicators, circular dials, or infinite spinners.
 ---
 
 ## 🖥️ 15. Sandboxed IFrame (`iframe`)
-An escape hatch to load custom, interactive HTML pages. Enables support for custom canvases, drawing pads, interactive charts, and external widget scripts.
+An escape hatch to load custom, interactive HTML pages. Enables support for custom canvases, drawing pads, interactive charts, dynamic suggestion menus, and full-screen web applications.
 
 ### Props:
 * `src` (string): Path to your static files (e.g. `/api/agents/{{agent_id}}/static/widget.html`).
-* `height` (string): Container height (e.g., `"350px"`).
-* `className` (string): Styling overrides.
+  * **Query Parameters for Tiny Primitives:** You may append small scalar values (e.g. `?theme=dark&mode=compact`).
+  * **⚠️ Never pass large arrays/objects via query params:** Query strings will overflow and `{{data.key}}` dot notation will fail regex matching. Pass rich datasets through the Python `data` parameter and receive them via `postMessage`.
+* `height` (string): Container height (e.g., `"350px"` or `"100%"`).
+* `className` (string): Styling overrides (Tailwind classes).
 
 ### Communication (Bidirectional `postMessage`):
-* **Submit data from inside the IFrame:**
-  ```javascript
-  // Extract dynamic agent ID from window pathname to construct the correct endpoint
-  const pathParts = window.location.pathname.split('/');
-  const agentId = ((pathParts[2] === 'plugins' || pathParts[2] === 'agents') && pathParts[3]) ? pathParts[3] : 'my_agent';
 
-  window.parent.postMessage({
-    type: 'SUBMIT_FORM',
-    actionUrl: `/api/plugins/${agentId}/submit_data`,
-    payload: { signature_path: '...' }
-  }, '*');
-  ```
-* The host will perform the HTTP POST to your agent's API endpoint and send the backend's response back to your iframe page so you can trigger success animations.
+#### 1. Inbound (Receiving Dynamic Data from Python Agent):
+```javascript
+window.addEventListener('message', (event) => {
+  const data = event.data;
+  if (!data || typeof data !== 'object') return;
+
+  // Handle data updates pushed from agent tools or platform
+  if (data.type === 'SET_DATA' || data.type === 'SET_SUGGESTIONS' || data.type === 'TOOL_RESPONSE') {
+    const payload = data.payload || data.data || data;
+    console.log("Inbound payload received:", payload);
+    populateUI(payload);
+  }
+});
+```
+
+#### 2. Outbound (Submit Data or Trigger Agent Tools):
+```javascript
+// Extract dynamic agent ID from window pathname or query parameters
+const pathParts = window.location.pathname.split('/');
+const agentId = ((pathParts[2] === 'plugins' || pathParts[2] === 'agents') && pathParts[3]) ? pathParts[3] : 'my_agent';
+
+window.parent.postMessage({
+  type: 'SUBMIT_FORM',
+  actionUrl: `agent://${agentId}/submit_data`,
+  payload: { selected_id: 104, query: 'sensor_data' }
+}, '*');
+```
+
+#### 3. Outbound (Direct Chat Timeline Broadcast):
+```javascript
+window.parent.postMessage({
+  type: 'HUBSCAPE_APP_BRIDGE',
+  action: 'POST_CHAT',
+  payload: {
+    text: 'User selected Subsystem: Propulsion Array',
+    senderName: 'Tactical Console'
+  }
+}, '*');
+```
 
 ### Example JSON:
 ```json

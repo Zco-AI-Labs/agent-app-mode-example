@@ -305,6 +305,10 @@ Canvas and remote widgets can communicate in real time without backend roundtrip
 When referencing dynamic data inside widget templates (e.g., text fields, image URLs, button action URLs):
 * **Use Flat Keys**: The React frontend (`DynamicWidget.tsx`) automatically unwraps/flattens dynamic payload namespaces (`data`, `response`, `result`, `widget_data`, etc.). Therefore, reference keys directly (e.g., use `{{image_url}}` instead of `{{data.image_url}}`).
 * **No Dot Notation**: The frontend's template interpolator matches variables using the regex `/\{\{\s*(\w+)\s*\}\}/g`. Because a dot (`.`) is not a word character (`\w`), the regex will fail to match placeholders containing dots, causing them to render literally in the DOM. Never use dots in template variable names.
+* **IFrame Data Ingestion Rules**:
+  - **Query Params**: Reserved strictly for tiny scalar bootstrap primitives (e.g. `?theme=dark`).
+  - **Forbidden Anti-Pattern**: Never attempt `?items={{data.items}}` in iframe `src`. It fails regex parsing, stringifies arrays into `[object Object]`, and exceeds URL size limits.
+  - **Rich Data**: Pass dynamic data via `context.show_widget("...", data={...})` and handle via `window.addEventListener('message', ...)` in the iframe.
 
 ---
 
