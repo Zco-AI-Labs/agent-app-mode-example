@@ -1,6 +1,4 @@
 import logging
-import json
-import urllib.parse
 from app.core.hubscape_adk import get_context
 
 logger = logging.getLogger(__name__)
@@ -10,8 +8,8 @@ def show_suggested_input(target: str = "inline") -> dict:
     """Displays an interactive input widget with a dropdown menu of suggested systems.
 
     The suggested systems are dynamically retrieved from telemetry services and attached
-    to the show_widget 'data' parameter, which are then passed into the iframe to
-    pre-populate the searchable dropdown. No suggestions are hardcoded in the HTML.
+    to the show_widget 'data' parameter. The iframe receives this data strictly in-memory
+    via postMessage with zero URL query parameters. No suggestions are hardcoded in the HTML.
 
     Args:
         target: Spatial surface target for the widget ('inline' or 'sidebar'). Defaults to 'inline'.
@@ -33,22 +31,21 @@ def show_suggested_input(target: str = "inline") -> dict:
         {"label": "Navigational Deflector", "icon": "🧭", "category": "Navigation"}
     ]
 
-    # URL-encode the JSON structure so it safely passes through query parameters
-    encoded_suggestions = urllib.parse.quote(json.dumps(dynamic_suggestions))
-
+    # Pass the rich list directly into data without URL-encoding into query parameters
     data = {
         "title": "Subsystem Search",
-        "suggestions": encoded_suggestions
+        "suggestions": dynamic_suggestions
     }
 
     directive = context.show_widget(
-        widget_template_id="suggested_input_widget",
+        "suggested_input_widget",
         data=data,
-        target="inline"
+        target=target
     )
 
+    logger.info(f"Mounted suggested input widget with pure postMessage channel (target={target})")
     return {
         "status": "success",
-        "message": "Suggested input widget displayed (target: inline).",
-        "directive": directive
+        "directive": directive,
+        "message": f"Suggested input widget displayed in {target} viewport via postMessage."
     }

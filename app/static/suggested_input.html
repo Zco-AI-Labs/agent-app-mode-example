@@ -258,39 +258,73 @@
         renderSuggestions(input.value);
       }
 
-      // 1. Hydrate suggestions purely from URL parameters (passed directly from the data object)
+      // 1. Optional Fallback: URL parameters (supported for backward compatibility, but clean URL is preferred)
       const urlParams = new URLSearchParams(window.location.search);
       const suggestionsParam = urlParams.get("suggestions") || urlParams.get("items") || urlParams.get("data");
       if (suggestionsParam) {
         suggestions = safeParseSuggestionsParam(suggestionsParam);
       }
 
-      // 2. Inbound postMessage Listener (allows real-time updates without hardcoded values)
+      // 2. Primary Inbound postMessage Listener (Pure in-memory data channel)
       window.addEventListener("message", function(event) {
         if (!event.data || typeof event.data !== "object") return;
         const msg = event.data;
 
+        // Direct SET_DATA (from Holodeck / DynamicWidget handshake)
+        if (msg.type === "SET_DATA" || msg.type === "DATA_RESPONSE") {
+          const payload = msg.payload || msg.data || {};
+          const items = payload.suggestions || (Array.isArray(payload) ? payload : null);
+          if (Array.isArray(items) && items.length > 0) {
+            console.log("[IFrame] Received suggestions via SET_DATA postMessage:", items.length);
+            updateSuggestions(items);
+          }
+        }
         // Direct SET_SUGGESTIONS
-        if (msg.type === "SET_SUGGESTIONS" && Array.isArray(msg.payload)) {
+        else if (msg.type === "SET_SUGGESTIONS" && Array.isArray(msg.payload)) {
+          console.log("[IFrame] Received suggestions via SET_SUGGESTIONS postMessage:", msg.payload.length);
           updateSuggestions(msg.payload);
         }
         // Hubscape App Bridge event
         else if (msg.type === "HUBSCAPE_APP_BRIDGE" && msg.detail) {
           const detail = msg.detail;
-          if ((detail.type === "SET_SUGGESTIONS" || detail.action === "SET_SUGGESTIONS") && Array.isArray(detail.payload)) {
-            updateSuggestions(detail.payload);
-          } else if (detail.payload && Array.isArray(detail.payload.suggestions)) {
-            updateSuggestions(detail.payload.suggestions);
+          const items = detail.payload?.suggestions || (Array.isArray(detail.payload) ? detail.payload : null);
+          if (Array.isArray(items) && items.length > 0) {
+            console.log("[IFrame] Received suggestions via HUBSCAPE_APP_BRIDGE:", items.length);
+            updateSuggestions(items);
           }
         }
         // Backend tool response
         else if (msg.type === "TOOL_RESPONSE" && msg.payload) {
           const payload = Array.isArray(msg.payload) ? msg.payload : (msg.payload.suggestions || []);
           if (Array.isArray(payload) && payload.length > 0) {
+            console.log("[IFrame] Received suggestions via TOOL_RESPONSE:", payload.length);
             updateSuggestions(payload);
           }
         }
       });
+
+      // 3. Handshake: Notify parent Holodeck runtime that iframe is ready to receive widget data
+      function requestInitialData() {
+        try {
+          window.parent.postMessage({
+            type: "GET_WIDGET_DATA",
+            action: "GET_WIDGET_DATA"
+          }, "*");
+          window.parent.postMessage({
+            type: "HUBSCAPE_APP_BRIDGE",
+            action: "IFRAME_READY",
+            payload: { ready: true }
+          }, "*");
+        } catch (e) {}
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", requestInitialData);
+      } else {
+        requestInitialData();
+      }
+      // Retry request after 100ms in case parent is still mounting
+      setTimeout(requestInitialData, 100);
 
       // Outbound postMessage when user selects an item
       function selectItem(item) {

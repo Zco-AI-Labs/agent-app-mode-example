@@ -9,7 +9,7 @@
     {
       "type": "iframe",
       "props": {
-        "src": "/api/agents/{{agent_id}}/static/suggested_input.html?suggestions={{suggestions}}",
+        "src": "/api/agents/{{agent_id}}/static/suggested_input.html",
         "height": "240px",
         "className": "w-full border-0 rounded-lg bg-transparent"
       }

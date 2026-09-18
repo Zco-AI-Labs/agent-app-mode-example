@@ -1,6 +1,4 @@
 import pytest
-import json
-import urllib.parse
 from app.core import hubscape_adk
 from app.scripts.show_suggested_input import show_suggested_input
 
@@ -24,19 +22,16 @@ def test_show_suggested_input_purely_from_data():
     assert action["payload"]["widgetId"] == "suggested_input_widget"
     assert action["payload"]["widgetConfig"]["type"] == "container"
 
-    # Verify data contains dynamic encoded suggestions
+    # Verify data contains dynamic pure python suggestions list
     data = action["payload"]["data"]
     assert "suggestions" in data
-    decoded = json.loads(urllib.parse.unquote(data["suggestions"]))
-    assert isinstance(decoded, list)
-    assert len(decoded) >= 5
-    assert decoded[0]["label"] == "Defensive Shields"
+    assert isinstance(data["suggestions"], list)
+    assert len(data["suggestions"]) >= 5
+    assert data["suggestions"][0]["label"] == "Defensive Shields"
 
-    # Verify iframe src contains the encoded suggestions from data
+    # Verify iframe src is completely clean with ZERO query parameters
     iframe_child = action["payload"]["widgetConfig"]["children"][0]
     assert iframe_child["type"] == "iframe"
     src = iframe_child["props"]["src"]
-    assert "suggested_input.html?suggestions=" in src
-    unquoted_src = urllib.parse.unquote(src)
-    assert "Defensive Shields" in unquoted_src
-    assert "Warp Propulsion" in unquoted_src
+    assert src == "/api/agents/tactical_ops/static/suggested_input.html"
+    assert "?" not in src
